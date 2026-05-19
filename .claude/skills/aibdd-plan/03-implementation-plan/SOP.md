@@ -2,6 +2,18 @@
 
 緣由：02 已把 boundary 對外契約（operation / state）落地，但只到 e2e 可驗證面；要讓下游 GREEN 不只「過測」、還能「結構 fit」，必須再做一層 internal design——以多條情境的 sequence diagram 為先導，收斂成一張類別圖（C4-Level class diagram）作為實作骨架，遵守 tidy-first（make the change easy, then make the easy change）。
 
+0. **RESOLVE arguments**——將本 SOP 引用的 `${VAR}` 透過 sibling resolver 綁定，並把 resolver stdout（每行一筆 `KEY=value`）原樣 EMIT 給用戶。Resolver 非 0 退出時，停止本 SOP 並把 stderr 透傳給用戶。
+
+   ```bash
+   python3 .claude/skills/aibdd-core/scripts/python/resolve_args.py <<'EOF'
+   DEV_CONSTITUTION_PATH=${DEV_CONSTITUTION_PATH}
+   PLAN_IMPLEMENTATION_DIR=${PLAN_IMPLEMENTATION_DIR}
+   PLAN_INTERNAL_STRUCTURE=${PLAN_INTERNAL_STRUCTURE}
+   PLAN_REPORTS_DIR=${PLAN_REPORTS_DIR}
+   PLAN_SEQUENCE_DIR=${PLAN_SEQUENCE_DIR}
+   EOF
+   ```
+
 1. READ `${DEV_CONSTITUTION_PATH}`；後續內部結構與分層須與之一致。
 
 2. THINK：設計實作路徑與內部結構

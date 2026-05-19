@@ -2,6 +2,19 @@
 
 緣由：實作計畫（對外契約、對內結構）就緒後，本 phase 把「Gherkin business-statement-step → 可執行自動化步驟與斷言」之映射規則，依顆粒度寫入 `${BOUNDARY_PACKAGE_DSL}`、`${BOUNDARY_SHARED_DSL}`。
 
+0. **RESOLVE arguments**——將本 SOP 引用的 `${VAR}` 透過 sibling resolver 綁定，並把 resolver stdout（每行一筆 `KEY=value`）原樣 EMIT 給用戶。Resolver 非 0 退出時，停止本 SOP 並把 stderr 透傳給用戶。
+
+   ```bash
+   python3 .claude/skills/aibdd-core/scripts/python/resolve_args.py <<'EOF'
+   BOUNDARY_PACKAGE_DSL=${BOUNDARY_PACKAGE_DSL}
+   BOUNDARY_SHARED_DSL=${BOUNDARY_SHARED_DSL}
+   BOUNDARY_YML=${BOUNDARY_YML}
+   CONTRACTS_DIR=${CONTRACTS_DIR}
+   DSL_KEY_LOCALE=${DSL_KEY_LOCALE}
+   TRUTH_BOUNDARY_ROOT=${TRUTH_BOUNDARY_ROOT}
+   EOF
+   ```
+
 1. DERIVE `${DSL_KEY_LOCALE}`
    - 依 `steps/dsl-key-locale.md` 1.1–1.3 執行；其餘以該檔為準。
 
