@@ -8,9 +8,7 @@ user-invocable: false
 
 ## §1 角色
 
-Formulation skill。綁定 DSL = DBML (.dbml)。被多個 Planner DELEGATE：
-- `aibdd-entity-analysis`：L1 web-service logical ER 落地（`<function_module>/<boundary-id>/entities/logical.dbml`）
-- `aibdd-system-analysis`：sub-boundary state schema 落地（`<function_module>/<boundary-id>/sub-boundaries/<sub-id>/states/*.dbml`，限 persistence=dbml 的 backend sub-boundary；`type` 不出現於 path — 由 boundary.yml `type` 欄位 SSOT）
+Formulation skill。綁定 DSL = DBML (.dbml)。被多個 Planner DELEGATE（如 `aibdd-entity-analysis` 之 logical ER、`aibdd-system-analysis` 之 sub-boundary state schema），Planner 在 DELEGATE payload 內提供具體 `target_path`，本 skill 不自決。
 
 ---
 
@@ -24,7 +22,7 @@ Formulation skill。綁定 DSL = DBML (.dbml)。被多個 Planner DELEGATE：
 | Axis 單位對應 | 推理包中每個單位的具體對應 |
 | CiC 記號清單 | 便條紙（GAP / ASM / BDY / CON）+ 錨點 |
 | 退出狀態 | Reason 步是否完整通過 |
-| `target_path` | Planner 指定的輸出路徑 |
+| `target_path` | Planner 指定之**相對於 `${DATA_DIR}` 的檔案路徑**（例：`logical.dbml`、`<boundary-id>/entities/logical.dbml`、`<boundary-id>/sub-boundaries/<sub-id>/states/<state>.dbml`；切檔策略由 Planner 決定）。**不得**含 `<<NN-functional-module>>` 借位子層 — `${DATA_DIR}` 在 SSOT 已是 flat directory（見 `aibdd-core::spec-package-paths.md`），functional module 借位只允許出現在 `${TRUTH_BOUNDARY_PACKAGES_DIR}` 子樹。 |
 
 **缺項**：推理包不完整或 `target_path` 未指定 → 回退呼叫 Planner 補齊。
 
@@ -36,7 +34,8 @@ Formulation skill。綁定 DSL = DBML (.dbml)。被多個 Planner DELEGATE：
 2. **展開 DBML 結構**：從推理包的 Entity / Relationship 展開為 Table / Ref 宣告
 3. **套用 patterns**：讀 `references/patterns/naming-rules.md` + `schema-modularization.md`
 4. **保留 CiC**：推理包中的便條紙 inline 到 DBML 註解（`// CiC(<KIND>): ...`）
-5. **寫檔**：依 `target_path` 寫出
+5. **寫檔前 ASSERT**：`target_path` 不得含 `<<NN-functional-module>>` 借位子層；違反 → STOP 並回退 Planner 補正（白話文回報「target_path 違反 `${DATA_DIR}` flat 規約」）。
+6. **寫檔**：依 `target_path` 寫出（落點＝`${DATA_DIR}` ⊕ `target_path`）。
 
 ---
 

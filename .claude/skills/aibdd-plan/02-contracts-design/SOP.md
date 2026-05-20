@@ -17,6 +17,10 @@
 
 1. PARSE 從 `01-bind-and-load` 已載入之 profile 取出 `operation_contract_specifier.{skill,format}` 與 `state_specifier.{skill,format}`；產出目錄分別對齊 `${CONTRACTS_DIR}`、`${DATA_DIR}`。
 
-2. DELEGATE `operation_contract_specifier.skill`：載入該 skill 並遵循其自身的禁令與輸入／輸出形狀。以 `${PLAN_SPEC}`、`${FEATURE_SPECS_DIR}/**` 為 SSOT 做系統分析（可加讀 `${PLAN_REPORTS_DIR}/discovery-sourcing.md`、`${ACTIVITIES_DIR}/**`）；產出一系列良好模組化、精準切分的 boundary operation contract，依該 skill 認定之 `format` 寫入 `${CONTRACTS_DIR}`。
+2. DERIVE operation contract `slice_list`：以 `${PLAN_SPEC}`、`${FEATURE_SPECS_DIR}/**` 為 SSOT 做系統分析（可加讀 `${PLAN_REPORTS_DIR}/discovery-sourcing.md`、`${ACTIVITIES_DIR}/**`），切出良好模組化、精準切分的 operation contract slice。每個 slice 必須含 `target_path` + `scope`，其中 `target_path` 為**相對於 `${CONTRACTS_DIR}` 的檔案路徑**（例：`api.yml`、`api/<resource>.yml`、`<boundary-id>/api.yml`，依切檔策略決定）。`target_path` **不得**含 `<<NN-functional-module>>` 借位子層 — `${CONTRACTS_DIR}` 在 SSOT 已是 flat directory（見 `aibdd-core::spec-package-paths.md`）。
 
-3. DELEGATE `state_specifier.skill`：同樣以 `${PLAN_SPEC}`、`${FEATURE_SPECS_DIR}/**` 為 SSOT，從資料流動建立資料狀態聚合分析，把資料拆分成 Domain Aggregate／Entity／Value-Object——客觀、不腦補；依該 skill 認定之 `format` 寫入 `${DATA_DIR}`。
+3. DELEGATE `/${operation_contract_specifier.skill}`：請直接透過 Load SKILL 執行該 skill，並遵循其自身的禁令與輸入／輸出形狀，DELEGATE payload 內帶入步驟 2 之 `slice_list`；specifier 依其認定之 `format` 寫入 `${CONTRACTS_DIR} ⊕ slice.target_path`。
+
+4. DERIVE state `target_path` 集合：同樣以 `${PLAN_SPEC}`、`${FEATURE_SPECS_DIR}/**` 為 SSOT，從資料流動建立資料狀態聚合分析，把資料拆分成 Domain Aggregate／Entity／Value-Object——客觀、不腦補；依切檔策略決定每份 state schema 的 `target_path`（相對 `${DATA_DIR}` 的檔案路徑）。`target_path` **不得**含 `<<NN-functional-module>>` 借位子層。
+
+5. DELEGATE `/${state_specifier.skill}`：請直接透過 Load SKILL 執行該 skill，DELEGATE payload 內帶入步驟 4 之 `target_path`；specifier 依其認定之 `format` 寫入 `${DATA_DIR} ⊕ target_path`。
