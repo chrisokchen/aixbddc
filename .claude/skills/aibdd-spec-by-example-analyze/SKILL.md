@@ -9,23 +9,9 @@
 
 ## PRINCIPLE: Artifact output contract（硬限制）
 
-- 本 SOP **唯一允許產生或修改**的 artifact，**只能**來自於下述 SOP 中透過 CREATE / WRITE / UPDATE / DELEGATE 明確標注的產出物：feature files 例子填充（**只**經 DELEGATE `/aibdd-form-feature-spec` mode=example-fill）、`${TRUTH_FUNCTION_PACKAGE}/coverage/*.coverage.yml` 之 `coverage_type: example` 列、`${PLAN_REPORTS_DIR}/bdd-analyze-cic.md`、`${PLAN_REPORTS_DIR}/bdd-analyze-quality.md`。
-- 【嚴禁】除上述 target 外，**其他任何 READ / SEARCH / THINK / DERIVE 所觀察到的路徑，都只可作為分析依據，不得被順手建立、寫入、更新或補骨架。**
-
-## PRINCIPLE: 不重畫 Plan 真相
-
-- `/aibdd-plan` 已 accepted 的 `${BOUNDARY_PACKAGE_DSL}`、`${BOUNDARY_SHARED_DSL}`、`${CONTRACTS_DIR}/**`、`${DATA_DIR}/**`、`${TEST_STRATEGY_FILE}`、`${FEATURE_SPECS_DIR}/**` 之 atomic rule 本體 **為唯讀輸入**；本 skill **不得**新增或修改任何 DSL entry、不得改寫 contract operation 或 DBML 欄位、不得改 atomic rule 字詞、不得改 feature 路徑／檔名。
-- 若發現 plan 真相不足以推導 Example（缺 binding、缺 contract 欄位、缺 DBML 表、缺 stub policy 等）→ 累積 CiC 便條紙寫入 `${PLAN_REPORTS_DIR}/bdd-analyze-cic.md`，**STOP** 並提示回 `/aibdd-plan`；**禁止**就地補洞、**禁止**自生 step pattern 讓下游 bypass。
-
-## PRINCIPLE: 真相格式委派 specifier skills
-
-- `.feature` 之 Scenario／Scenario Outline + Examples 填空之**唯一合法管道**為 **`DELEGATE /aibdd-form-feature-spec`** with `mode=example-fill`。一個 feature path 為一次 DELEGATE；payload 含 `target_path`、`reasoning`（本輪推理 bundle 切片）、`atomic_rule_ids`。
-- 本 skill **不得**手寫任何 `.feature` 任一行；只負責 DERIVE caller payload 並 `DELEGATE`。違者視為 ownership 違規，**立即 STOP**。
-
-## PRINCIPLE: 靜默累積 CiC 便條紙，不呼叫 clarify-loop
-
-- 本 skill 為背景推理階段；任何上游真相缺洞、Outline 合併歧義、Example 維度無法填滿等疑處，**一律**累積為 CiC 便條紙寫入 `${PLAN_REPORTS_DIR}/bdd-analyze-cic.md`（kind ∈ `GAP`／`ASM`／`BDY`／`CON`，每條含 `where`／`text`），由下游 `/speckit.clarify` 下一輪消化。
-- **禁止** inline 向使用者提問；**禁止** DELEGATE `/clarify-loop`。本原則與 plan/discovery 不同——上述兩 skill 需互動澄清，本 skill 一律靜默。
+- 本 SOP **唯一允許產生或修改**的 artifact，**只能**來自於下述 SOP 中透過 CREATE / WRITE / UPDATE / DELEGATE / TRIGGER 明確標注的產出物。
+- 各 sub-SOP 可在其**明確擁有的 `.feature` 區塊**內做 idempotent inline update（例如 `01` 的 Example skeleton、`02` 的 `# candidates:`）；不得改寫其他 phase 已落地決策或 upstream accepted truth。
+- 【嚴禁】**其他任何 READ / SEARCH / THINK / DERIVE 所觀察到的路徑，都只可作為分析依據，不得被順手建立、寫入、更新或補骨架。**
 
 ## PRINCIPLE: STRICT SOP
 
@@ -48,14 +34,8 @@
 
 0. 在 CWD 底下 grep 搜尋 `**/arguments.yml` 檔案，做 parameters binding for all following phases，這些參數後續每一 phase 都會用到。此檔案一定存在，如不存在請直接停止執行，向使用者回報：「我在 ${CWD} 底下找不到 **/arguments.yml 檔案，你是否已經執行過 /aibdd-kickoff、/aibdd-discovery、/aibdd-plan 了？」
 
-1. EXECUTE the sub-sop: `01-bind-and-load/SOP.md`
+1. EXECUTE `01-example-form-lock/SOP.md`
 
-2. EXECUTE the sub-sop: `02-classify-rule/SOP.md`
+2. EXECUTE `02-handler-retrieval/SOP.md`
 
-3. EXECUTE the sub-sop: `03-enumerate-data/SOP.md`
-
-4. EXECUTE the sub-sop: `04-plan-scenario/SOP.md`
-
-5. EXECUTE the sub-sop: `05-delegate-and-quality-gate/SOP.md`
-
-6. 和用戶說道（可使用不同詞彙但維持語意）：「OK /aibdd-spec-by-example-analyze 完成。本輪 atomic rules 已展成 Scenario／Scenario Outline + Examples，coverage matrix 已寫入 package；語意 verdict 已寫入 `${PLAN_REPORTS_DIR}/bdd-analyze-quality.md`（deterministic check 腳本已自本 skill 移除，不再強制執行）。{若有 CiC 便條紙：『尚有 N 張便條紙待 /speckit.clarify 釐清，路徑：${PLAN_REPORTS_DIR}/bdd-analyze-cic.md。』否則省略}如沒問題，可以執行 /aibdd-tasks，正式進入 task list 拆解。」
+2. 和用戶說道（可使用不同詞彙但維持語意）：「OK /aibdd-spec-by-example-analyze 完成。本輪 atomic rules 已展成 Scenario／Scenario Outline + Examples，coverage matrix 已寫入 package；語意 verdict 已寫入 `${PLAN_REPORTS_DIR}/bdd-analyze-quality.md`（deterministic check 腳本已自本 skill 移除，不再強制執行）。{若有 CiC 便條紙：『尚有 N 張便條紙待 /speckit.clarify 釐清，路徑：${PLAN_REPORTS_DIR}/bdd-analyze-cic.md。』否則省略}如沒問題，可以執行 /aibdd-tasks，正式進入 task list 拆解。」

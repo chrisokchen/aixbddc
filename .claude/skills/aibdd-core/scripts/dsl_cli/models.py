@@ -181,3 +181,18 @@ class EvalReport:
     status: Literal["PASS", "FAIL"]
     total_entries: int
     violations: list[Violation] = field(default_factory=list)
+
+
+# ---------- Catalog query ----------
+
+
+@dataclass(frozen=True)
+class CatalogMatch:
+    name: str
+    handler: str
+    target_part_path: str
+    source_file: str
+    source_scope: Literal["regular", "shared"]
+    format: str
+    param_bindings: dict[str, dict[str, str]] = field(default_factory=dict)
+    datatable_bindings: dict[str, dict[str, str | bool]] = field(default_factory=dict)

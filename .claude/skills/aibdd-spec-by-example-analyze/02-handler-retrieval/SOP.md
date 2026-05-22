@@ -1,0 +1,35 @@
+# SOP
+
+緣由：先把每個 `# @dsl` block 可選的 DSL id 就地補齊，後續 DSL arrangement 只需在 `.feature` 內挑選，不必再回頭掃整個 DSL catalog。
+
+0. RESOLVE arguments——將本 SOP 引用的 `${VAR}` 透過 sibling resolver 綁定，並把 resolver stdout（每行一筆 `KEY=value`）原樣 EMIT 給用戶。Resolver 非 0 退出時，停止本 SOP 並把 stderr 透傳給用戶。
+
+   ```bash
+   python3 .claude/skills/aibdd-core/scripts/python/resolve_args.py <<'EOF'
+   FEATURE_SPECS_DIR=${FEATURE_SPECS_DIR}
+   CONTRACTS_DIR=${CONTRACTS_DIR}
+   DATA_DIR=${DATA_DIR}
+   BOUNDARY_SHARED_DSL=${BOUNDARY_SHARED_DSL}
+   EOF
+   ```
+
+1. LIST `${FEATURE_SPECS_DIR}/**/*.feature`。
+
+2. TRIGGER handler-candidate apply script：
+   1. 執行此 script:
+      ```bash
+      python3 .claude/skills/aibdd-spec-by-example-analyze/02-handler-retrieval/scripts/cli/apply_handler_candidates.py \
+          ${FEATURE_PATHS} \
+          --contracts-dir "${CONTRACTS_DIR}" \
+          --data-dir "${DATA_DIR}" \
+          --shared-dsl "${BOUNDARY_SHARED_DSL}"
+      ```
+      1. INPUTS
+         1. `${FEATURE_PATHS}`：步驟 1 列出的 `.feature` 路徑清單。
+         2. `--contracts-dir`：contract DSL 目錄（`${CONTRACTS_DIR}`）。
+         3. `--data-dir`：data DSL 目錄（`${DATA_DIR}`）。
+         4. `--shared-dsl`：boundary shared DSL 路徑（`${BOUNDARY_SHARED_DSL}`）。
+      2. OUTCOME
+         1. 指定 `.feature` 原地改寫；每個 `# @dsl` block 的 `# candidates:` 區塊由 script enrich。
+         2. stdout 回傳 JSON report，內含 `changed_count`、`feature_count`、`changed_features`、`updated_block_count`、`questions`、`report.summary`。
+   2. 若 $questions 非空：針對 $questions DELEGATE `/clarify-loop` 提問來修正錯誤，若錯誤判斷都修正完畢之後，則重複執行 3.1。

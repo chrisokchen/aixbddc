@@ -18,10 +18,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from dsl_cli.catalog import query_by_handlers
 from dsl_cli.diff import compute_unresolved
 from dsl_cli.dsl_reader import index_resolved_parts, load_dsl_files
 from dsl_cli.eval_rules.rules import evaluate
-from dsl_cli.models import AddedEntry, EvalReport, GenerationReport
+from dsl_cli.models import AddedEntry, CatalogMatch, EvalReport, GenerationReport
 from dsl_cli.preset_loader import load_preset_plugin
 from dsl_cli.spec_parsers.dispatcher import dispatch_spec_parser
 from dsl_cli.writer import append_templates, route_template_to_file
@@ -82,3 +83,21 @@ def run_eval(
         shared_loaded = load_dsl_files([shared_dsl_path])[shared_dsl_path]
         shared_names = {e.name for e in shared_loaded}
     return evaluate(entries_by_file, shared_names)
+
+
+def run_query(
+    dsl_paths: list[Path],
+    handlers: list[str],
+    shared_dsl_path: Path | None = None,
+    source_scope: str = "regular",
+) -> list[CatalogMatch]:
+    if source_scope not in ("regular", "shared", "all"):
+        raise ValueError(
+            f"source_scope must be regular|shared|all, got {source_scope!r}"
+        )
+    return query_by_handlers(
+        dsl_paths=dsl_paths,
+        handlers=handlers,
+        shared_dsl_path=shared_dsl_path,
+        source_scope=source_scope,  # type: ignore[arg-type]
+    )

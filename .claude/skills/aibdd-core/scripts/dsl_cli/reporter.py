@@ -6,7 +6,10 @@ the orchestrator returns.
 
 from __future__ import annotations
 
-from dsl_cli.models import EvalReport, GenerationReport
+import json
+from dataclasses import asdict
+
+from dsl_cli.models import CatalogMatch, EvalReport, GenerationReport
 
 
 def render_generation_report(report: GenerationReport) -> str:
@@ -46,3 +49,8 @@ def render_eval_report(report: EvalReport) -> str:
         if v.hint:
             lines.append(f"    hint: {v.hint}")
     return "\n".join(lines) + "\n"
+
+
+def render_query_json(matches: list[CatalogMatch]) -> str:
+    payload = [asdict(match) for match in matches]
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"

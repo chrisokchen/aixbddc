@@ -5,6 +5,8 @@ Subcommands:
                             --specs <path>... --dsl <path>...
                             [--boundaries-root <path>]
   eval                      --dsl <path>... [--shared-dsl <path>]
+  query                     --handler <id>... [--dsl <path>...]
+                            [--shared-dsl <path>] [--source-scope regular|shared|all]
 
 `--boundaries-root` defaults to the canonical on-disk location
 (.claude/skills/aibdd-core/assets/boundaries/) so production callers pass only
@@ -14,10 +16,11 @@ Subcommands:
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
-from dsl_cli.orchestrator import run_eval, run_generate_dsl_instructions
-from dsl_cli.reporter import render_eval_report, render_generation_report
+from dsl_cli.orchestrator import run_eval, run_generate_dsl_instructions, run_query
+from dsl_cli.reporter import render_eval_report, render_generation_report, render_query_json
 
 # cli.py -> dsl_cli/ -> scripts/ -> aibdd-core/ -> assets/boundaries
 _DEFAULT_BOUNDARIES_ROOT = (
@@ -39,6 +42,16 @@ def _build_parser() -> argparse.ArgumentParser:
     ev.add_argument("--dsl", nargs="+", type=Path, required=True)
     ev.add_argument("--shared-dsl", type=Path, default=None)
 
+    q = subs.add_parser("query")
+    q.add_argument("--handler", action="append", required=True)
+    q.add_argument("--dsl", action="append", type=Path, default=[])
+    q.add_argument("--shared-dsl", type=Path, default=None)
+    q.add_argument(
+        "--source-scope",
+        choices=("regular", "shared", "all"),
+        default="regular",
+    )
+
     return parser
 
 
@@ -54,4 +67,17 @@ def main(argv: list[str] | None = None) -> int:
         report = run_eval(args.dsl, args.shared_dsl)
         print(render_eval_report(report))
         return 0 if report.status == "PASS" else 1
+    if args.command == "query":
+        try:
+            matches = run_query(
+                args.dsl,
+                args.handler,
+                args.shared_dsl,
+                args.source_scope,
+            )
+        except ValueError as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        print(render_query_json(matches), end="")
+        return 0
     return 2
