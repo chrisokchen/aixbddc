@@ -50,6 +50,28 @@ Feature: compute_unresolved treats a part as resolved iff some entry's target is
       When compute_unresolved is called
       Then unresolved parts do not include "data/data.dbml#users"
 
+  Rule: 後置（狀態）- relationship anchor 只有完全相等時才視為 resolved
+    Example: 同一條 ref entry 應 resolve 同一條 relationship part
+      Given the following parts:
+        | target_part_path                             |
+        | data/data.dbml#ref:room_members.player_id>users.id |
+      And the following resolved targets:
+        | target_part_path                             |
+        | data/data.dbml#ref:room_members.player_id>users.id |
+      When compute_unresolved is called
+      Then unresolved parts do not include "data/data.dbml#ref:room_members.player_id>users.id"
+
+  Rule: 後置（狀態）- 不同 relationship anchor 不可互相誤判 resolved
+    Example: 另一條 ref entry 不能 resolve 當前 relationship part
+      Given the following parts:
+        | target_part_path                             |
+        | data/data.dbml#ref:room_members.player_id>users.id |
+      And the following resolved targets:
+        | target_part_path                             |
+        | data/data.dbml#ref:room_members.room_id>rooms.id |
+      When compute_unresolved is called
+      Then unresolved parts include "data/data.dbml#ref:room_members.player_id>users.id"
+
   Rule: 後置（狀態）- 跨 spec_file 不應 cross-resolve
     Example: data.dbml 的 entry 不能 resolve room.api.yml 的 part（即使 pointer 字面類似）
       Given the following resolved targets:

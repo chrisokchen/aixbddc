@@ -52,6 +52,8 @@ Feature: dsl_cli generate-dsl-instructions on joinRoom (spec §1 worked example)
         room_no varchar [not null]
         player_id varchar [not null]
       }
+
+      Ref: room_members.player_id > users.id
       """
     And a temporary file at "specs/contracts/room.dsl.yml" with content:
       """
@@ -75,6 +77,13 @@ Feature: dsl_cli generate-dsl-instructions on joinRoom (spec §1 worked example)
       And the file "specs/data/data.dsl.yml" contains the text "name: users.state-verifier"
       And the file "specs/data/data.dsl.yml" contains the text "name: room_members.state-builder"
       And the file "specs/data/data.dsl.yml" contains the text "name: room_members.state-verifier"
+
+  Rule: 後置（狀態）- DBML relationship 應額外展開一條 relationship-derived verifier
+    Example: room_members.player_id > users.id 會落成 state-verifier skeleton
+      Then the file "specs/data/data.dsl.yml" contains the text "name: room_members_player_id_to_users_id.state-verifier"
+      And the file "specs/data/data.dsl.yml" contains the text "target_part_path: specs/data/data.dbml#ref:room_members.player_id>users.id"
+      And the file "specs/data/data.dsl.yml" contains the text "#   room_members_player_id:"
+      And the file "specs/data/data.dsl.yml" contains the text "#   users_id:"
 
   Rule: 後置（狀態）- 寫出的 entry 皆為 HARNESS skeleton 形態（format 為 <FILL IN>）
     Example: room.dsl.yml 含 `<FILL IN>` 占位

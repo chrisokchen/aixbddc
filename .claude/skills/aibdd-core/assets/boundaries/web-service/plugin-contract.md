@@ -45,7 +45,10 @@
 
 - **Required source**: `data_model`
 - **Plugin 構造保證**：
-  - `target_part_path` 指向 DBML 規格內某 table（與 state-builder 同 scheme）。
+  - 若來源為 `DbmlTablePart`，`target_part_path` 指向 DBML 規格內某 table（與 state-builder 同 scheme）。
+  - 若來源為 relationship-derived part，`target_part_path` 指向 DBML 關係 anchor（如 `data/domain.dbml#ref:players.room_id>rooms.id`）。
+  - relationship-derived verifier 只 fan-out 一條 `state-verifier` entry，不產 `state-builder` sibling。
+  - relationship-derived verifier 的 `candidate_bindings` 只覆蓋關係兩端驗證所需的 identity / FK 欄位；不得退化成整張 table 欄位全掃。
   - SEMANTIC 階段需做到：`param_bindings` 或 `datatable_bindings` 覆蓋查找身份（identity 欄位）；assertion 欄位走 `datatable_bindings`。
   - 不得讀 `context.last_response` — verifier 永遠以 DB 為信源。
 

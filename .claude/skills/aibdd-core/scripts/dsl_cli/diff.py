@@ -13,9 +13,11 @@ The "descendant" check is segment-aware, not raw string-prefix, so paths like
        exactly; differing spec files never resolve each other.
     2. For JSON Pointer anchors (those starting with `/`), split on `/` and
        check list-prefix on the segment lists.
-    3. For DBML-style dot-separated anchors (`<table>` or `<table>.<column>`),
+    3. For DBML relationship anchors (`ref:<from>.<col><op><to>.<col>`), only
+       exact equality resolves the part; there is no descendant notion.
+    4. For DBML-style dot-separated anchors (`<table>` or `<table>.<column>`),
        a child anchor must start with `<part_anchor> + '.'` to count.
-    4. The empty-anchor case (rare) treats any non-empty anchor on the same
+    5. The empty-anchor case (rare) treats any non-empty anchor on the same
        spec_file as a descendant.
 """
 
@@ -54,6 +56,8 @@ def _is_descendant_or_equal(entry_path: str, part_path: str) -> bool:
             len(entry_segments) > len(part_segments)
             and entry_segments[: len(part_segments)] == part_segments
         )
+    if part_anchor.startswith("ref:"):
+        return False
     # DBML-style dotted anchor.
     if part_anchor == "":
         return entry_anchor != ""

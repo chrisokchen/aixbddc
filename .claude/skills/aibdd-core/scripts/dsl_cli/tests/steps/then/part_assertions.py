@@ -108,11 +108,38 @@ def _part_by_table_name(context, table_name: str):
     return matches[0]
 
 
+def _part_by_ref(context, ref_text: str):
+    parts = [
+        p
+        for p in context.parts
+        if getattr(getattr(p, "kind", None), "value", None) == "dbml_ref"
+        and (
+            f"{getattr(p, 'from_table', '')}.{getattr(p, 'from_column', '')} "
+            f"{getattr(p, 'operator', '')} "
+            f"{getattr(p, 'to_table', '')}.{getattr(p, 'to_column', '')}"
+        )
+        == ref_text
+    ]
+    assert parts, (
+        f"no dbml_ref part {ref_text!r}; got "
+        f"{[p.target_part_path for p in context.parts if getattr(getattr(p, 'kind', None), 'value', None) == 'dbml_ref']}"
+    )
+    return parts[0]
+
+
 @then('the part named "{name}" has target_part_path "{expected}"')
 def step_assert_named_part_target(context, name: str, expected: str):
     part = _part_by_table_name(context, name)
     assert part.target_part_path == expected, (
         f"{name}.target_part_path mismatch:\n  expected: {expected}\n  actual:   {part.target_part_path}"
+    )
+
+
+@then('the ref part "{ref_text}" has target_part_path "{expected}"')
+def step_assert_ref_part_target(context, ref_text: str, expected: str):
+    part = _part_by_ref(context, ref_text)
+    assert part.target_part_path == expected, (
+        f"{ref_text}.target_part_path mismatch:\n  expected: {expected}\n  actual:   {part.target_part_path}"
     )
 
 

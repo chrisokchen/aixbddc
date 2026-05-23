@@ -18,6 +18,7 @@ from typing import Literal
 class PartKind(str, Enum):
     api_operation = "api_operation"
     dbml_table = "dbml_table"
+    dbml_ref = "dbml_ref"
 
 
 @dataclass(frozen=True)
@@ -73,6 +74,17 @@ class DbmlTablePart(Part):
     table_name: str
     columns: tuple[Column, ...] = ()
     not_null_columns: tuple[Column, ...] = ()
+
+
+@dataclass(frozen=True)
+class DbmlRefPart(Part):
+    from_table: str
+    from_column: str
+    to_table: str
+    to_column: str
+    operator: Literal[">", "-"]
+    from_target_part_path: str
+    to_target_part_path: str
 
 
 # ---------- DSL entry / template structures ----------

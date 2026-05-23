@@ -10,6 +10,8 @@ Mapping owned by this preset:
   - DbmlTablePart →
       state-builder
       state-verifier
+  - DbmlRefPart →
+      state-verifier
 
 Per spec.md / Policy 2 + Risk R5, this plugin is the SSOT for:
   - which handlers each part-kind expands to
@@ -29,6 +31,7 @@ from __future__ import annotations
 from dsl_cli.models import (
     ApiOperationPart,
     CandidateBinding,
+    DbmlRefPart,
     DbmlTablePart,
     DSLInstructionTemplate,
 )
@@ -41,6 +44,8 @@ def generate_templates(parts, context):
             templates.extend(_for_api_operation(part))
         elif isinstance(part, DbmlTablePart):
             templates.extend(_for_dbml_table(part))
+        elif isinstance(part, DbmlRefPart):
+            templates.extend(_for_dbml_ref(part))
         # Unknown part kinds are silently skipped: a future preset that adds
         # new spec_parsers can layer in without disturbing existing ones.
     return templates
@@ -115,3 +120,27 @@ def _for_dbml_table(part):
         ),
     )
     return [builder, verifier]
+
+
+def _for_dbml_ref(part):
+    relation_token = "to" if part.operator == ">" else "link"
+    verifier = DSLInstructionTemplate(
+        handler="state-verifier",
+        name=(
+            f"{part.from_table}_{part.from_column}_"
+            f"{relation_token}_{part.to_table}_{part.to_column}.state-verifier"
+        ),
+        target_part_path=part.target_part_path,
+        source_spec_path=part.spec_file,
+        candidate_bindings=(
+            CandidateBinding(
+                key=f"{part.from_table}_{part.from_column}",
+                target=part.from_target_part_path,
+            ),
+            CandidateBinding(
+                key=f"{part.to_table}_{part.to_column}",
+                target=part.to_target_part_path,
+            ),
+        ),
+    )
+    return [verifier]
