@@ -67,7 +67,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: 庫存不足時加入購物車失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "庫存不足"
@@ -82,7 +82,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: 庫存不足時加入購物車失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   #   - product.state-builder
                   #   - addToCart.operation-invoke
@@ -106,7 +106,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   #   - stale.state-builder
                   Given <dsl>
@@ -122,7 +122,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   #   - product.state-builder
                   Given <dsl>
@@ -150,7 +150,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: time-control
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """
@@ -164,7 +164,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: time-control
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   #   - clock.time-control
                   Given <dsl>
@@ -181,7 +181,7 @@ Feature: apply handler candidates to # @dsl blocks
 
                 Example: y
                   # @dsl
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """
@@ -200,7 +200,7 @@ Feature: apply handler candidates to # @dsl blocks
 
                 Example: y
                   # @dsl
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """
@@ -216,7 +216,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: unknown-kind
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """
@@ -236,7 +236,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: unknown-kind
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   Given <dsl>
                   When <dsl>
@@ -253,7 +253,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """
@@ -268,7 +268,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   # candidates:
                   #   - product.state-builder
                   Given <dsl>
@@ -286,7 +286,7 @@ Feature: apply handler candidates to # @dsl blocks
                 Example: y
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: rules/precondition-state.md
+                  # rule: rules/shared-given-law.md
                   Given <dsl>
                   When <dsl>
         """

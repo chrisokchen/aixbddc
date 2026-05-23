@@ -7,26 +7,25 @@
    ```bash
    python3 .claude/skills/aibdd-core/scripts/python/resolve_args.py <<'EOF'
    BOUNDARY_YML=${BOUNDARY_YML}
-   FEATURE_SPECS_DIR=${FEATURE_SPECS_DIR}
-   PLAN_REPORTS_DIR=${PLAN_REPORTS_DIR}
-   TRUTH_FUNCTION_PACKAGE=${TRUTH_FUNCTION_PACKAGE}
    EOF
    ```
 
 1. READ boundary type profile
    1. PARSE `${BOUNDARY_YML}` 之 `type` 欄位為 `$boundary_type`（同 `/aibdd-plan` bind-and-load 步驟 3）。若此欄位不存在 → STOP 並報錯。
 
-2. LIST `${FEATURE_SPECS_DIR}/**/*.feature`
+2. USE `${SCOPED_FEATURE_PATHS}` as bound impacted feature file scope
+   1. `${SCOPED_FEATURE_PATHS}` 由頂層 SOP 步驟 1 綁定。
+   2. 若 `${SCOPED_FEATURE_PATHS}` 為空 → STOP 並報錯。
 
 3. TRIGGER form-lock apply script：
     1. 執行此 script:
         ```bash
         python3 .claude/skills/aibdd-spec-by-example-analyze/01-example-form-lock/scripts/cli/apply_form_lock.py \
-            ${FEATURE_PATHS} \
+            ${SCOPED_FEATURE_PATHS} \
             --boundary-yml "${BOUNDARY_YML}"
         ```
         1. INPUTS
-            1. `${FEATURE_PATHS}`：步驟 2 列出的 `.feature` 路徑清單。
+            1. `${SCOPED_FEATURE_PATHS}`：步驟 2 列出的 `.feature` 路徑清單。
             2. `--boundary-yml`：active boundary 來源。
         2. OUTCOME
             1. 指定 `.feature` 原地改寫；未 lock 的 `Rule` 會插入 Example skeleton。

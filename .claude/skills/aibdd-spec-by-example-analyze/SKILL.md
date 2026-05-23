@@ -34,8 +34,16 @@
 
 0. 在 CWD 底下 grep 搜尋 `**/arguments.yml` 檔案，做 parameters binding for all following phases，這些參數後續每一 phase 都會用到。此檔案一定存在，如不存在請直接停止執行，向使用者回報：「我在 ${CWD} 底下找不到 **/arguments.yml 檔案，你是否已經執行過 /aibdd-kickoff、/aibdd-discovery、/aibdd-plan 了？」
 
-1. EXECUTE `01-example-form-lock/SOP.md`
+1. BIND feature files——READ `${PLAN_REPORTS_DIR}/discovery-sourcing.md`，PARSE `## Impact matrix`，DERIVE `${SCOPED_FEATURE_PATHS}`（取第一欄所有以 `.feature` 結尾之列，視為相對 `specs/` 的路徑段，materialize 為 `specs/<path>`）。若 `Impact matrix` 缺失、無 `.feature` 列、或任一路徑無法唯一解析，直接停止並回報 discovery report 不完整。後續所有 sub-SOP 一律沿用 `${SCOPED_FEATURE_PATHS}`，不得再自行重新計算 scope。
 
-2. EXECUTE `02-handler-retrieval/SOP.md`
+2. EXECUTE `01-example-form-lock/SOP.md`
 
-2. 和用戶說道（可使用不同詞彙但維持語意）：「OK /aibdd-spec-by-example-analyze 完成。本輪 atomic rules 已展成 Scenario／Scenario Outline + Examples，coverage matrix 已寫入 package；語意 verdict 已寫入 `${PLAN_REPORTS_DIR}/bdd-analyze-quality.md`（deterministic check 腳本已自本 skill 移除，不再強制執行）。執行途中若有需要人判定之處，已在對應 phase 直接透過 `/clarify-loop` 即時釐清，不另寫 questions report。如沒問題，可以執行 /aibdd-tasks，正式進入 task list 拆解。」
+3. EXECUTE `02-handler-retrieval/SOP.md`
+
+4. EXECUTE `03-dsl-arrangement/SOP.md`
+
+5. EXECUTE `04-parameter-instantiation/SOP.md`
+
+6. 和用戶說道（可使用不同詞彙但維持語意）：「OK /aibdd-spec-by-example-analyze 完成。本輪 `${SCOPED_FEATURE_PATHS}` 內 atomic rules 已展成 Scenario／Scenario Outline + Examples，並完成 Given／When／Then 的 DSL arrangement 與 canonical exemplar instantiation（唯一產物為原地改寫之 `.feature`）。
+
+嗯，本步完成後即可直接執行 /aibdd-tasks！」

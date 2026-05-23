@@ -37,13 +37,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
 
@@ -69,13 +69,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <操作> 後 <狀態主詞> 變為 <新狀態>
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/postcondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-postcondition-state.md 補 `後置（狀態）` 所需建構出的可量測初始狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作成功
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/postcondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-success-law.md 理解成功情境下 Then 怎麼推理，再用其中 `後置（狀態）` 小節判斷這裡該怎麼驗證操作成功後系統狀態已經改成預期結果。
                   And <dsl>
         """
 
@@ -97,13 +97,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
 
@@ -124,13 +124,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <操作> 後 <回應主詞> 為 <期望值>
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/postcondition-response.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-postcondition-response.md 補 `後置（回應）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作成功
                   # @dsl
                   # handler-candidate-kinds: response-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/postcondition-response.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-success-law.md 理解成功情境下 Then 怎麼推理，再用其中 `後置（回應）` 小節判斷這裡該怎麼驗證操作成功後回應內容符合預期。
                   And <dsl>
         """
 
@@ -155,13 +155,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
 
@@ -175,13 +175,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
       When form-lock apply is run on the last feature file
@@ -194,13 +194,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
 
@@ -270,13 +270,13 @@ Feature: apply form-lock Example skeleton insertion
                 Example: <主詞> 不滿足 <條件> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-state.md 補 `前置（狀態）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體錯誤訊息>"
                   # @dsl
                   # handler-candidate-kinds: state-verifier
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-state.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-then-failure-law.md 理解失敗情境下 Then 怎麼推理，再用其中 `前置（狀態）` 小節判斷這裡該怎麼驗證操作失敗後系統狀態沒有變動。
                   And <dsl>
         """
 
@@ -299,7 +299,7 @@ Feature: apply form-lock Example skeleton insertion
                 Scenario Outline: <參數名> = <無效值> 時 <操作> 失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder | operation-invoke | time-control | external-stub
-                  # rule: ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/precondition-param.md
+                  # rule: 先讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/shared-given-law.md 理解 shared arrangement 作為你的推理流程，再讀 ${SKILL_HOME}/aibdd-core/assets/boundaries/web-service/rules/given-delta-precondition-param.md 補 `前置（參數）` 所需建構出的系統合法狀態。
                   Given <dsl>
                   When <dsl>
                   Then 操作失敗，錯誤為 "<具體驗證錯誤訊息>"
