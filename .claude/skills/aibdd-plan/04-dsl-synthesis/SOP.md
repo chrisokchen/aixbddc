@@ -21,8 +21,7 @@
 3. **(HARNESS) RUN** `dsl_cli generate-dsl-instructions`：
 
    ```bash
-   PYTHONPATH=.claude/skills/aibdd-core/scripts \
-     python -m dsl_cli generate-dsl-instructions \
+   uv run .claude/skills/aibdd-core/scripts/run_dsl_cli.py generate-dsl-instructions \
      --boundary <boundary> \
      --specs ${CONTRACTS_DIR}/*.api.yml ${DATA_DIR}/*.dbml \
      --dsl ${CONTRACTS_DIR}/*.dsl.yml ${DATA_DIR}/*.dsl.yml
@@ -47,8 +46,7 @@
 5. **(HARNESS) RUN** `dsl_cli eval`：
 
    ```bash
-   PYTHONPATH=.claude/skills/aibdd-core/scripts \
-     python -m dsl_cli eval \
+   uv run .claude/skills/aibdd-core/scripts/run_dsl_cli.py eval \
      --dsl ${CONTRACTS_DIR}/*.dsl.yml ${DATA_DIR}/*.dsl.yml \
      --shared-dsl ${BOUNDARY_SHARED_DSL}
    ```

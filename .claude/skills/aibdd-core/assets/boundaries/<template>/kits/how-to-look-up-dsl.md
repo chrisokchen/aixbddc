@@ -6,8 +6,7 @@
 請參考底下指令來善用 dsl_cli query 來找到該 step format 的候選 DSL。
 
 ```bash
-    PYTHONPATH=.claude/skills/aibdd-core/scripts \
-    python3 -m dsl_cli query \
+    uv run .claude/skills/aibdd-core/scripts/run_dsl_cli.py query \
     <FILL-IN：這邊填寫 cli 的參數>
 ```
 

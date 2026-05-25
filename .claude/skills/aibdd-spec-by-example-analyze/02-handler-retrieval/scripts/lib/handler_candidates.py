@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 import sys
@@ -30,7 +29,7 @@ def repo_root_from_module() -> Path:
 
 
 _REPO_ROOT = repo_root_from_module()
-DSL_CLI_SCRIPTS = _REPO_ROOT / ".claude/skills/aibdd-core/scripts"
+DSL_CLI_ENTRY = _REPO_ROOT / ".claude/skills/aibdd-core/scripts/run_dsl_cli.py"
 
 
 @dataclass
@@ -148,8 +147,7 @@ def _run_dsl_cli_query(
 ) -> list[dict[str, Any]]:
     cmd = [
         sys.executable,
-        "-m",
-        "dsl_cli",
+        str(DSL_CLI_ENTRY),
         "query",
         *sum([["--handler", handler] for handler in handlers], []),
         "--source-scope",
@@ -159,14 +157,11 @@ def _run_dsl_cli_query(
         cmd.extend(["--dsl", path.as_posix()])
     if shared_dsl_path is not None:
         cmd.extend(["--shared-dsl", shared_dsl_path.as_posix()])
-    env = os.environ.copy()
-    env["PYTHONPATH"] = str(DSL_CLI_SCRIPTS)
     proc = subprocess.run(
         cmd,
         capture_output=True,
         text=True,
         cwd=cwd,
-        env=env,
     )
     if proc.returncode != 0:
         raise RuntimeError(proc.stderr.strip() or proc.stdout.strip() or "query failed")

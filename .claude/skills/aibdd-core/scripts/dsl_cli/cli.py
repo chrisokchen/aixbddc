@@ -1,4 +1,4 @@
-"""argparse entry for `python -m dsl_cli`.
+"""argparse entry for dsl_cli.
 
 Subcommands:
   generate-dsl-instructions --boundary <name>
@@ -8,6 +8,14 @@ Subcommands:
   query                     [--handler <id>...] [--step-text <text>]
                             [--dsl <path>...] [--shared-dsl <path>]
                             [--source-scope regular|shared|all]
+
+Preferred invocation:
+
+    uv run .claude/skills/aibdd-core/scripts/run_dsl_cli.py <subcommand> ...
+
+Legacy package entry (requires PYTHONPATH and pre-installed runtime deps):
+
+    PYTHONPATH=.claude/skills/aibdd-core/scripts python3 -m dsl_cli <subcommand> ...
 
 `--boundaries-root` defaults to the canonical on-disk location
 (.claude/skills/aibdd-core/assets/boundaries/) so production callers pass only

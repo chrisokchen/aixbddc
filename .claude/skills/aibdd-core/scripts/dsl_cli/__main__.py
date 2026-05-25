@@ -1,4 +1,9 @@
-"""Make `python -m dsl_cli ...` invoke cli.main()."""
+"""Make `python -m dsl_cli ...` invoke cli.main().
+
+Preferred portable entry (PEP 723, auto-installs runtime deps via uv):
+
+    uv run .claude/skills/aibdd-core/scripts/run_dsl_cli.py <subcommand> ...
+"""
 
 from __future__ import annotations
 
