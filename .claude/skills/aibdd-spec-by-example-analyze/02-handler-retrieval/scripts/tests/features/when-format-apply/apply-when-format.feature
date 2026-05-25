@@ -11,7 +11,7 @@ Feature: apply when format to When placeholders
                 Example: 庫存不足時加入購物車失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/shared-given-law.md
+                  # rule: dsl-arrangement-rules/shared-given-law.md
                   # candidates:
                   #   - product.state-builder
                   Given <dsl>
@@ -37,7 +37,7 @@ Feature: apply when format to When placeholders
                 Example: 庫存不足時加入購物車失敗
                   # @dsl
                   # handler-candidate-kinds: state-builder
-                  # rule: rules/shared-given-law.md
+                  # rule: dsl-arrangement-rules/shared-given-law.md
                   # candidates:
                   #   - product.state-builder
                   Given <dsl>

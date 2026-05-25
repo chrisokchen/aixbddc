@@ -10,8 +10,8 @@
 #
 # Resolution
 #   1. Read boundary.yml → active boundary type (e.g. web-service)
-#   2. Load boundaries/<type>/forms/form-lock.profile.yml
-#   3. Resolve templates relative to this file's directory (forms/)
+#   2. Load boundaries/<type>/sbe-form-lock/form-lock.profile.yml
+#   3. Resolve templates relative to this file's directory (sbe-form-lock/)
 #
 # =============================================================================
 
@@ -19,7 +19,7 @@ boundary_type: web-service
 
 # Rule headline prefix → Example form template (.tmpl in forms_root).
 # Loader MUST sort by rule_prefix length descending before matching.
-# Plain 「後置（狀態）」 is allowed per four-rules-prefix ELSE branch.
+# Plain 「後置（狀態）」 is allowed.
 rule_prefix_to_template:
   - rule_prefix: "前置（狀態"
     template: precondition-state.tmpl

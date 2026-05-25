@@ -2,7 +2,7 @@ Feature: load form-lock profile for active boundary
 
   Rule: 後置（狀態） - loader 應把 profile 轉成可用 JSON
     Example: 明確 profile 輸入應得到對應 JSON projection
-      Given a form-lock profile at "fixtures/web-service/forms/form-lock.profile.yml" with content:
+      Given a form-lock profile at "fixtures/web-service/sbe-form-lock/form-lock.profile.yml" with content:
         """
         boundary_type: web-service
         rule_prefix_to_template:
@@ -26,7 +26,7 @@ Feature: load form-lock profile for active boundary
 
   Rule: 後置（狀態） - rule_prefix 應依長度降序排序
     Example: 輸入未排序 prefix 時輸出應為最長者在前
-      Given a form-lock profile at "fixtures/web-service/forms/form-lock.profile.yml" with content:
+      Given a form-lock profile at "fixtures/web-service/sbe-form-lock/form-lock.profile.yml" with content:
         """
         boundary_type: web-service
         rule_prefix_to_template:

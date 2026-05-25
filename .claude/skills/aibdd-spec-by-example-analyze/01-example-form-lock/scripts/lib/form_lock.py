@@ -13,6 +13,8 @@ EXECUTABLE_START = re.compile(
     r"^\s*(Example:|Scenario Outline:|Scenario:|Given |When |Then |And )"
 )
 PROFILE_FILENAME = "form-lock.profile.yml"
+SBE_FORM_LOCK_DIR = "sbe-form-lock"
+DSL_ARRANGEMENT_RULES_DIR = "dsl-arrangement-rules"
 
 
 def repo_root_from_module() -> Path:
@@ -31,7 +33,7 @@ DEFAULT_BOUNDARY_YML = _REPO_ROOT / "specs/architecture/boundary.yml"
 @dataclass
 class FormLockConfig:
     boundary_type: str
-    forms_dir: Path
+    sbe_form_lock_dir: Path
     rule_prefix_to_template: list[tuple[str, str]]
 
 
@@ -81,7 +83,7 @@ def load_profile_from_path(profile_path: Path) -> FormLockConfig:
         raise ValueError(f"rule_prefix_to_template missing in {profile_path}")
     return FormLockConfig(
         boundary_type=boundary_type,
-        forms_dir=profile_path.parent,
+        sbe_form_lock_dir=profile_path.parent,
         rule_prefix_to_template=_sort_prefix_mappings(raw_entries),
     )
 
@@ -91,7 +93,7 @@ def resolve_profile_for_boundary_type(
     boundaries_root: Path = CORE_BOUNDARIES_ROOT,
 ) -> FormLockConfig:
     profile_path = (
-        boundaries_root / boundary_type / "forms" / PROFILE_FILENAME
+        boundaries_root / boundary_type / SBE_FORM_LOCK_DIR / PROFILE_FILENAME
     )
     return load_profile_from_path(profile_path)
 
@@ -330,7 +332,7 @@ def apply_in_place_update(
             )
             continue
 
-        tmpl_path = config.forms_dir / template_name
+        tmpl_path = config.sbe_form_lock_dir / template_name
         block = extract_template_block(tmpl_path)
         rule_indent = RULE_PATTERN.match(rule_line)
         if not rule_indent:

@@ -11,6 +11,7 @@ from behave import given, then, when
 
 from lib.form_lock import (
     CORE_BOUNDARIES_ROOT,
+    SBE_FORM_LOCK_DIR,
     apply_in_place_update,
     load_profile_from_path,
     repo_root_from_module,
@@ -47,7 +48,10 @@ def _format_unknown_prefix_questions(questions) -> str:
 @given("the web-service form-lock profile from repo assets")
 def step_load_repo_web_service_profile(context):
     profile_path = (
-        CORE_BOUNDARIES_ROOT / "web-service" / "forms" / "form-lock.profile.yml"
+        CORE_BOUNDARIES_ROOT
+        / "web-service"
+        / SBE_FORM_LOCK_DIR
+        / "form-lock.profile.yml"
     )
     context.files["profile_path"] = profile_path
     context.last_config = load_profile_from_path(profile_path)
@@ -74,15 +78,15 @@ def step_create_profile_yml(context, relpath: str):
 @given("canonical web-service templates are copied beside the profile")
 def step_copy_web_service_templates(context):
     profile_path: Path = context.files["profile_path"]
-    src_forms_dir = CORE_BOUNDARIES_ROOT / "web-service" / "forms"
-    dst_forms_dir = profile_path.parent
+    src_sbe_form_lock_dir = CORE_BOUNDARIES_ROOT / "web-service" / SBE_FORM_LOCK_DIR
+    dst_sbe_form_lock_dir = profile_path.parent
     for name in (
         "precondition-state.tmpl",
         "precondition-param.tmpl",
         "postcondition-response.tmpl",
         "postcondition-state.tmpl",
     ):
-        shutil.copyfile(src_forms_dir / name, dst_forms_dir / name)
+        shutil.copyfile(src_sbe_form_lock_dir / name, dst_sbe_form_lock_dir / name)
 
 
 @given("a minimal precondition-state template beside the profile")
