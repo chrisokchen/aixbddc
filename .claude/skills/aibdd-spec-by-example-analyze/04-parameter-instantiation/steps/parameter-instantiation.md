@@ -100,6 +100,10 @@
    3. 交回外層 phase 走 `/clarify-loop`，不得自行發明值。
    4. 若你無法判定某欄位應該是 static known value 還是 runtime-produced value，也視為無法唯一決定；此時必須提問，不得直接把它 concretize 成看似合理的假 id。
 
+7. `$NEED_TO_CLARIFY` = DO FAITHFUL REASONING 針對當前 `.feature` 範疇內所有已落地的 `Example` / `Scenario Outline`，依照 `derive-findings.md` 中的分析切角去進行深度分析，並找到所有需要澄清的地方。
+
+8. 若 `$NEED_TO_CLARIFY` 非空：針對所有 `$NEED_TO_CLARIFY`，DELEGATE `/clarify-loop` skill 以單次最多五題的方式來進行提問。
+
 # Worker hard limits
 1. 不得變更 `When` step 的行為意圖；若 `When` 內含 placeholder，只能把它落成 concrete exemplar 或符合 slot 型別格式的 `$alias`，不得改寫該操作想表達的業務語意。
 2. 不得新增新的 Scenario、不得新增新的 Examples rows。

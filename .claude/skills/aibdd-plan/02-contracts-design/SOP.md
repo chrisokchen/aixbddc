@@ -44,3 +44,9 @@
       python3 .claude/skills/aibdd-discovery/01-sourcing-and-packaging/scripts/cli/manage_impact_matrix.py \
         --matrix ${IMPACT_MATRIX_YML} validate
       ```
+
+7. `$NEED_TO_CLARIFY`, `$NEED_TO_FIX` = DO FAITHFUL REASONING 針對本 phase 已導出之 operation contracts、state schemas 與 impact writeback 整體結果，依照 `steps/derive-findings.md` 中的分析切角去進行深度分析，並找到所有需要修正、澄清的地方。
+
+8. 若 `$NEED_TO_FIX` 非空：依 `$NEED_TO_FIX` 修正本 phase 之 operation contract slices、state target paths、specifier delegation input 與 impact matrix writeback，必要時重跑步驟 `2` 到 `6`。
+
+9. 若 `$NEED_TO_CLARIFY` 非空：DELEGATE `/clarify-loop` 一次進行提問。

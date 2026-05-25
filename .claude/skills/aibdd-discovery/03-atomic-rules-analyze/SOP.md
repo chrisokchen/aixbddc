@@ -21,7 +21,7 @@
    EOF
    ```
 
-1. [LOOP] FOR EACH 上一 Phase 產出的 Feature File - 列舉其中的所有 atomic rules (每一個 Feature File 開設一個 TODO TASK，每個 TASK 進行底下兩步驟）：
+1. [LOOP] FOR EACH 上一 Phase 產出的 Feature File - 列舉其中的所有 atomic rules （每一個 Feature File 開設一個 TODO TASK，每個 TASK 進行底下兩步驟）：
    1.1 **FAITHFUL REASONING：FOR EACH 上一 Phase 產出的 Feature File，列舉其中的所有 atomic rules**：
       - **READ** `rules/atomic-rule-granularity.md`，atomic rule 的顆粒度、命名句型、4 種類型前綴、原子化判定、禁止自生**全部**以此檔為準。
       - 對每個 Feature File：依其 Phase 02 已綁定之 Action，到 **`${PLAN_SPEC}`** 找對應的 raw 敘述段落；找不到對應句子 → 該 Feature 不產 rule，列為「來源缺失」交後續步驟澄清。
@@ -33,8 +33,10 @@
       - 模板中四段 `Rule:` 為**排版示例**；實際檔案只輸出有 raw 證據之 rule，條數與順序不拘，類型可重複。
       - 同一檔內已存在之同一 `Rule:` **主句**不重複寫入；無 rule 可寫（來源缺失等）則**不更動**正文並列澄清隊列。
 
-2. DERIVE **`$FINDINGS = $VIOLATIONS ∪ $AMBIGUITY_FINDINGS`**（含「來源缺失」）。
+2. `$NEED_TO_CLARIFY`, `$NEED_TO_FIX` = DO FAITHFUL REASONING 針對所有與範疇內相關的 Feature Files 依照 `steps/derive-findings.md` 中的分析切角去進行深度分析，並找到所有需要修正、澄清的地方。
 
-3. IF **`$FINDINGS` 非空** → **DELEGATE** `/clarify-loop`，**`delegated_intake`**：**`profile`**＝**`aibdd-discovery`**，**`phase`**＝**`atomic-rules`**，`raw_items`←`$FINDINGS` 每筆之 **`text`**，`anchors` 鍵 **`plan_spec`／`plan_reports_dir`／`feature_specs_dir`** 分別←本 sub-SOP **`${PLAN_SPEC}`** 等（相對 **`CWD`**）。若 **`completed`**：依回傳合流 **`${PLAN_SPEC}`** 與相關 **`.feature`**。
+3. 若 `$NEED_TO_FIX` 非空：UPDATE FEATURE FILES: 針對所有 `$NEED_TO_FIX` 在遵守 `rules/atomic-rule-granularity.md` 的前提下，進行修正。
 
-4. 向使用者：**IF **`$FINDINGS` 為空**或步驟 **3** 回傳 `completed`** → 說道（語意不變即可）：「OK，很好，每個 Feature File 對應的規則我想我們是分析完了，現在每個 Feature File 都定義好了你本次需求的所有規則，你的系統的複雜度以及之後的實作將由這些規則的驗收測試所驅動，你明白嗎？」**IF 步驟 **3** 回傳 `unsupported_tooling`** → 唯轉述 **`/clarify-loop`** 回傳（含 **`artefacts.wrote`**），**不得**在聊天重造題組。**END** Sub-SOP。
+4. 若 `$NEED_TO_CLARIFY` 非空：針對所有 `$NEED_TO_CLARIFY`，DELEGATE /clarify-loop skill 針對每一題來進行提問。
+
+5. 向使用者說道（語意不變、詞彙可改）：「OK，很好，每個 Feature File 對應的規則我想我們是分析完了，現在每個 Feature File 都定義好了你本次需求的所有規則，你的系統的複雜度以及之後的實作將由這些規則的驗收測試所驅動，你明白嗎？」
