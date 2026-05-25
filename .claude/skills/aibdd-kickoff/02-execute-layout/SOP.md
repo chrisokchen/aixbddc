@@ -57,7 +57,7 @@
 
 15. **ASSERT** `${dst}/.aibdd/arguments.yml`、`boundary.yml`、`component-diagram.class.mmd` 三檔**全部不含** `${KICKOFF_` 子字串（grep 結果為空）。若有殘留 → 向 user 告知殘留位置並 STOP。
 
-16. **ASSERT** `$shared_dsl_path` 存在，且檔案內容**不含** `<backend-variant-id>` 或 `<frontend-variant-id>` placeholder。
+16. **ASSERT** `$shared_dsl_path` 存在。
 
 17. IF path_exists(`${PLAN_PATH}`) → DELETE `${PLAN_PATH}`（清理 File First 暫存檔）。
 

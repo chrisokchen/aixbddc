@@ -11,10 +11,10 @@ from pathlib import Path
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "kickoff_layout.py"
 
-STACK_EXPECTED_VARIANT = {
-    "python_e2e": "python-e2e",
-    "java_e2e": "java-e2e",
-    "nextjs_playwright": "nextjs-playwright",
+STACK_ENTRY_MARKERS = {
+    "python_e2e": "shared.operation-response-success-and-failure.operation-success",
+    "java_e2e": "shared.operation-response-success-and-failure.operation-success",
+    "nextjs_playwright": "shared.route-given.on-page",
 }
 
 
@@ -37,7 +37,7 @@ class KickoffSharedDslTest(unittest.TestCase):
         return json.loads(proc.stdout)
 
     def test_each_supported_stack_seeds_shared_dsl(self) -> None:
-        for stack, expected_variant in STACK_EXPECTED_VARIANT.items():
+        for stack, entry_marker in STACK_ENTRY_MARKERS.items():
             with self.subTest(stack=stack):
                 with tempfile.TemporaryDirectory() as tmp:
                     root = Path(tmp)
@@ -46,10 +46,8 @@ class KickoffSharedDslTest(unittest.TestCase):
                     shared_dsl = Path(result["shared_dsl_path"])
                     self.assertTrue(shared_dsl.is_file())
                     content = shared_dsl.read_text()
-                    self.assertIn("entries:", content)
-                    self.assertIn(f'variant: "{expected_variant}"', content)
-                    self.assertNotIn("<backend-variant-id>", content)
-                    self.assertNotIn("<frontend-variant-id>", content)
+                    self.assertIn("dsl_steps:", content)
+                    self.assertIn(entry_marker, content)
 
 
 if __name__ == "__main__":

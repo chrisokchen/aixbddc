@@ -6,8 +6,8 @@ Copies the invariant template tree (assets/templates/shared/) to the target
 boundary codebase root, then materializes specs/shared/dsl.yml from the active
 boundary preset's shared-dsl-template.yml.
 
-Placeholder substitution and per-stack tail appending are handled by
-02-execute-layout/SOP.md as post-copy LLM Edit ops.
+Per-stack tail appending and placeholder substitution for other kickoff
+artifacts are handled by 02-execute-layout/SOP.md as post-copy LLM Edit ops.
 
 Usage:
   python3 kickoff_layout.py --decisions-file <path.json>
@@ -40,43 +40,27 @@ SKILLS_DIR = SCRIPT_DIR.parent.parent.parent
 BOUNDARIES_ROOT = SKILLS_DIR / "aibdd-core" / "assets" / "boundaries"
 SPECS_ROOT_DIR = "specs"
 
-STACK_SHARED_DSL: dict[str, dict[str, str]] = {
-    "python_e2e": {
-        "boundary_asset_dir": "web-service",
-        "variant_placeholder": "<backend-variant-id>",
-        "variant": "python-e2e",
-    },
-    "java_e2e": {
-        "boundary_asset_dir": "web-service",
-        "variant_placeholder": "<backend-variant-id>",
-        "variant": "java-e2e",
-    },
-    "nextjs_playwright": {
-        "boundary_asset_dir": "web-frontend",
-        "variant_placeholder": "<frontend-variant-id>",
-        "variant": "nextjs-playwright",
-    },
+STACK_BOUNDARY_ASSET_DIR: dict[str, str] = {
+    "python_e2e": "web-service",
+    "java_e2e": "web-service",
+    "nextjs_playwright": "web-frontend",
 }
 
 
 def materialize_shared_dsl(dst: Path, stack: str) -> Path:
-    mapping = STACK_SHARED_DSL.get(stack)
-    if mapping is None:
+    boundary_asset_dir = STACK_BOUNDARY_ASSET_DIR.get(stack)
+    if boundary_asset_dir is None:
         raise ValueError(f"unsupported stack for shared DSL seed: {stack}")
 
     template_path = (
         BOUNDARIES_ROOT
-        / mapping["boundary_asset_dir"]
+        / boundary_asset_dir
         / "shared-dsl-template.yml"
     )
     if not template_path.is_file():
         raise FileNotFoundError(f"shared DSL template not found: {template_path}")
 
     content = template_path.read_text()
-    content = content.replace(
-        mapping["variant_placeholder"],
-        mapping["variant"],
-    )
 
     shared_dsl_path = dst / SPECS_ROOT_DIR / "shared" / "dsl.yml"
     shared_dsl_path.parent.mkdir(parents=True, exist_ok=True)
