@@ -4,7 +4,6 @@
 # Consumed by aibdd-red-execute (step-def implementation classification) and by
 # aibdd-spec-by-example-analyze (SBE classification reference).
 #
-# Schema: ../schemas/step-classification.schema.yml
 # Plan-time handler contracts (構造履約) live in ../plugin-contract.md.
 # Runtime handler implementation contracts live in handlers/*.md.
 

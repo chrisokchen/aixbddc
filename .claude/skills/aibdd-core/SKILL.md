@@ -1,6 +1,6 @@
 ---
 name: aibdd-core
-description: 跨 skill 共用 reference hub。包含 atomic rule 定義、report contract、authentication binding、spec package paths、physical-first principle、artifact partitioning、feature granularity 等共用 reference。LOAD-only — 由其他 sibling skill 透過 `aibdd-core::FILENAME.md` 載入；禁止重抄內容至自身 references。SKIP when caller 試圖直接 invoke 本 skill 而非 LOAD reference 檔。
+description: 跨 skill 共用 reference hub。包含 report contract、authentication binding、spec package paths、feature granularity 等共用 reference。LOAD-only — 由其他 sibling skill 透過 `aibdd-core::FILENAME.md` 載入；禁止重抄內容至自身 references。SKIP when caller 試圖直接 invoke 本 skill 而非 LOAD reference 檔。
 metadata:
   user-invocable: false
   skill-type: reference-hub
@@ -17,24 +17,14 @@ metadata:
 
 ```yaml
 references:
-  - path: references/atomic-rule-definition.md
-    purpose: Atomic rule semantic 判定
   - path: references/report-contract.md
     purpose: Planner 匯報格式 + user-facing message style
   - path: references/authentication-binding.md
     purpose: Actor key 為 authentication prerequisite 的跨 skill 慣例
   - path: references/spec-package-paths.md
     purpose: spec 路徑慣例 SSOT（boundary-aware）
-  - path: references/physical-first-principle.md
-    purpose: new packing DSL physical mapping 規則
-  - path: references/artifact-partitioning.md
-    purpose: Legacy — 舊 Speckit artifact 分工矩陣
   - path: references/feature-granularity.md
     purpose: feature 粒度 anti-pattern token + 命名規範
-  - path: references/diagram-file-naming.md
-    purpose: Mermaid 產物 compound extension 規範
-  - path: references/dsl-output-contract/red-usable-l1-l4.md
-    purpose: DSL L1-L4 必填欄位契約
   - path: references/filename-axes-convention/nn-prefix-then-title.md
     purpose: NN-title 命名軸 SSOT
   - path: references/gherkin-rule-body-prefix-policy/four-rules-prefix.md
@@ -55,30 +45,24 @@ references:
 
 | ID | Path | Phase scope | Purpose |
 |---|---|---|---|
-| R1 | `references/atomic-rule-definition.md` | global | Atomic rule semantic 判定（第一性原則；must / should / shall 不得藏 comment）|
-| R2 | `references/report-contract.md` | global | Planner 匯報格式、user-facing message style、scope 欄位慣例 |
-| R3 | `references/authentication-binding.md` | global | Actor key 作為 authentication prerequisite 的跨 skill 共用慣例 |
-| R4 | `references/spec-package-paths.md` | global | spec 路徑慣例 SSOT — kickoff boundary-aware（`arguments.yml` + `boundary.yml` 解析） |
-| R5 | `references/physical-first-principle.md` | global | new packing DSL physical mapping 規則 |
-| R6 | `references/artifact-partitioning.md` | legacy | 舊 Speckit artifact 分工矩陣；僅供仍未遷移的 legacy skill 讀取 |
-| R7 | `references/feature-granularity.md` | global | feature 粒度 anti-pattern token 篩檢 + 命名規範（`/aibdd-form-feature-spec` 寫檔守門用）|
-| R8 | `references/diagram-file-naming.md` | global | Mermaid 產物 compound extension：`*.class.mmd` / `*.sequence.mmd`（IDE routing） |
-| R9 | `references/dsl-output-contract/red-usable-l1-l4.md` | global | DSL L1-L4 必填欄位契約：`/aibdd-red` 可機械吃下的最低 schema |
-| R10 | `references/filename-axes-convention/nn-prefix-then-title.md` | global | spec package 與 feature 檔的 `NN-title` 命名軸 SSOT |
-| R11 | `references/gherkin-rule-body-prefix-policy/four-rules-prefix.md` | global | Rule body 四種 prefix（must/should/shall/may）寫作規範 |
-| R12 | `references/preset-contract/web-backend.md` | global | `web-backend` boundary preset 規章（step-classification / plugin-contract / handlers / variants 對應） |
-| R13 | `references/i18n/en-us.md` | global | en-US locale prose 慣例 |
-| R14 | `references/i18n/ja-jp.md` | global | ja-JP locale prose 慣例 |
-| R15 | `references/i18n/ko-kr.md` | global | ko-KR locale prose 慣例 |
-| R16 | `references/i18n/zh-hans.md` | global | zh-Hans locale prose 慣例 |
-| R17 | `references/i18n/zh-hant.md` | global | zh-Hant locale prose 慣例 |
+| R1 | `references/report-contract.md` | global | Planner 匯報格式、user-facing message style、scope 欄位慣例 |
+| R2 | `references/authentication-binding.md` | global | Actor key 作為 authentication prerequisite 的跨 skill 共用慣例 |
+| R3 | `references/spec-package-paths.md` | global | spec 路徑慣例 SSOT — kickoff boundary-aware（`arguments.yml` + `boundary.yml` 解析） |
+| R4 | `references/feature-granularity.md` | global | feature 粒度 anti-pattern token 篩檢 + 命名規範（`/aibdd-form-feature-spec` 寫檔守門用）|
+| R5 | `references/filename-axes-convention/nn-prefix-then-title.md` | global | spec package 與 feature 檔的 `NN-title` 命名軸 SSOT |
+| R6 | `references/gherkin-rule-body-prefix-policy/four-rules-prefix.md` | global | Rule body 四種 prefix（must/should/shall/may）寫作規範 |
+| R7 | `references/preset-contract/web-backend.md` | global | `web-backend` boundary preset 規章（step-classification / plugin-contract / handlers / variants 對應） |
+| R8 | `references/i18n/en-us.md` | global | en-US locale prose 慣例 |
+| R9 | `references/i18n/ja-jp.md` | global | ja-JP locale prose 慣例 |
+| R10 | `references/i18n/ko-kr.md` | global | ko-KR locale prose 慣例 |
+| R11 | `references/i18n/zh-hans.md` | global | zh-Hans locale prose 慣例 |
+| R12 | `references/i18n/zh-hant.md` | global | zh-Hant locale prose 慣例 |
 
 ## §2 ASSETS（Hub Exports）
 
 | Path | Purpose |
 |---|---|
 | `assets/boundaries/` | Boundary preset SSOT — `<preset.name>/{step-classification.yml, plugin-contract.md, handlers/, variants/, shared-dsl-template.yml, scripts/part_to_dsl.py}`；`/aibdd-red` 透過此處解析 preset assets |
-| `assets/boundaries/schemas/` | Boundary asset schema（如 `step-classification.schema.yml`） |
 
 ## §4 CROSS-REFERENCES
 
