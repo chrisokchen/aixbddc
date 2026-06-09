@@ -1,6 +1,6 @@
 ---
 name: aibdd-form-activity
-description: 將 discovery 產出的 Activity modeling elements 逐一翻譯成 `.activity` DSL，寫入檔案並執行語法驗證。
+description: 將上游 `/aibdd-flows-specify` 產出的 Activity modeling elements 逐一翻譯成 `.activity` DSL，寫入檔案並執行語法驗證。
 metadata:
   user-invocable: false
   source: project-level dogfooding
@@ -8,13 +8,13 @@ metadata:
 
 # aibdd-form-activity
 
-Formulation skill。只負責把 `discovery.02-activity-analyze` 已完成的 Activity modeling elements 轉成 `.activity` 語法；不重新判斷 actor 合法性、action 顆粒度、reuse、operation partition、或需求語意。
+Formulation skill。只負責把 `/aibdd-flows-specify` 的 `02-activity-analyze` 已完成的 Activity modeling elements 轉成 `.activity` 語法；不重新判斷 actor 合法性、action 顆粒度、reuse、operation partition、或需求語意。
 
 ## §1 REFERENCES
 
 | ID | Path | Phase scope | Purpose |
 |---|---|---|---|
-| R1 | `aibdd-core::spec-package-paths.md` | global | kickoff boundary-aware path SSOT |
+| R1 | `aibdd-core::ssot/spec-package-paths.md` | global | kickoff boundary-aware path SSOT |
 | R2 | `references/role-and-contract.md` | Phase 1 | caller payload schema + role boundary |
 | R3 | `references/format-reference.md` | Phase 2 | Activity element → `.activity` syntax mapping |
 | R4 | `scripts/decoder.py` | Phase 4 | `.activity` DSL decoder（同時為 SKILL.md Phase 4 syntax validator 與 BDD subject；spec SSOT = `scripts/tests/activity-decode.feature` + `scripts/tests/activity-benchmark.feature`） |
@@ -121,5 +121,5 @@ Formulation skill。只負責把 `discovery.02-activity-analyze` 已完成的 Ac
 
 ## §4 CROSS-REFERENCES
 
-- 由 `aibdd-discovery/reasoning/discovery/02-activity-analyze.md` Material Reducer SOP DELEGATE。
+- 由上游 `/aibdd-flows-specify`（flow／activity modeling）DELEGATE。
 - 上游必須先完成 Activity modeling；本 skill 不補需求、不改顆粒度、不新增 model element。

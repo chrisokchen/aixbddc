@@ -1,6 +1,6 @@
 ---
 name: aibdd-uiux-discovery
-description: 從 /aibdd-discovery 產出（spec.md / *.activity / *.feature skeleton / atomic rules）機械推導 component-first 視覺結構：先抽 component inventory（含 per-component state matrix）再組 frame composition map（每 frame 用哪些 component + canonical state combo），DELEGATE /clarify-loop 與 user 批次澄清視覺方向 / 元件盤點 / 品牌參考，emit Pencil-ready prompt（design/uiux-prompt.md）+ style profile（design/style-profile.yml）。下游可手動畫 .pen 或委派 /aibdd-uiux-draw 走 Pencil MCP 自動繪製。TRIGGER when 使用者下 /aibdd-uiux-discovery、discovery 完成想開始視覺探索、或被 plan 前流程委派。SKIP when discovery 產物缺失、target boundary 為純後端、已有既有 .pen 上游 SSOT、或 user 明示視覺已鎖（直接用既有 design system）。
+description: 從 /aibdd-flows-specify + /aibdd-rules-specify 產出（spec.md / *.activity / *.feature skeleton / atomic rules）機械推導 component-first 視覺結構：先抽 component inventory（含 per-component state matrix）再組 frame composition map（每 frame 用哪些 component + canonical state combo），DELEGATE /clarify-loop 與 user 批次澄清視覺方向 / 元件盤點 / 品牌參考，emit Pencil-ready prompt（design/uiux-prompt.md）+ style profile（design/style-profile.yml）。下游可手動畫 .pen 或委派 /aibdd-uiux-draw 走 Pencil MCP 自動繪製。TRIGGER when 使用者下 /aibdd-uiux-discovery、discovery 完成想開始視覺探索、或被 plan 前流程委派。SKIP when discovery 產物缺失、target boundary 為純後端、已有既有 .pen 上游 SSOT、或 user 明示視覺已鎖（直接用既有 design system）。
 metadata:
   user-invocable: true
   source: project-level dogfooding
@@ -8,7 +8,7 @@ metadata:
 
 # aibdd-uiux-discovery
 
-視覺探索規劃器（component-first v2）｜從 /aibdd-discovery 產出機械推導兩個關鍵結構 — **component inventory（含 per-component state matrix）+ frame composition map（每 frame 用哪些 component + canonical state combo）**；DELEGATE /clarify-loop 補齊使用者未講清楚的視覺維度；emit 一份 Pencil-ready 設計 brief（design/uiux-prompt.md）+ tokens 提案（design/style-profile.yml）。下游可手動畫 `.pen` 或委派 `/aibdd-uiux-draw` 透過 Pencil MCP 自動繪製。
+視覺探索規劃器（component-first v2）｜從 /aibdd-flows-specify + /aibdd-rules-specify 產出機械推導兩個關鍵結構 — **component inventory（含 per-component state matrix）+ frame composition map（每 frame 用哪些 component + canonical state combo）**；DELEGATE /clarify-loop 補齊使用者未講清楚的視覺維度；emit 一份 Pencil-ready 設計 brief（design/uiux-prompt.md）+ tokens 提案（design/style-profile.yml）。下游可手動畫 `.pen` 或委派 `/aibdd-uiux-draw` 透過 Pencil MCP 自動繪製。
 
 <!-- VERB-GLOSSARY:BEGIN — auto-rendered from programlike-skill-creator/references/verb-cheatsheet.md by render_verb_glossary.py; do not hand-edit -->
 > **Program-like SKILL.md — self-contained notation**
@@ -94,7 +94,7 @@ references:
 
 1. 把目前 skill 的執行設定與 discovery 產出讀齊，缺則先 STOP 引導使用者跑前置 skill。
    1.1 `$$skill_dir` = COMPUTE 目前 skill 目錄
-   1.2 LOAD REF [`aibdd-core::spec-package-paths.md`](aibdd-core::spec-package-paths.md) — boundary-aware 路徑規則
+   1.2 LOAD REF [`aibdd-core::ssot/spec-package-paths.md`](aibdd-core::ssot/spec-package-paths.md) — boundary-aware 路徑規則
    1.3 `$args_path` = COMPUTE `${workspace_root}/.aibdd/arguments.yml`
    1.4 `$args_exists` = MATCH path_exists(`$args_path`)
    1.5 IF `$args_exists` == false:
@@ -114,7 +114,7 @@ references:
    3.3 `$features` = COMPUTE list of `${FEATURE_SPECS_DIR}/**/*.feature`
    3.4 ASSERT `$spec_path` exists ∧ length(`$activities`) ≥ 1 ∧ length(`$features`) ≥ 1
    3.5 IF assertion fails:
-       3.5.1 EMIT "discovery 產物缺失；請先跑 /aibdd-discovery" to user
+       3.5.1 EMIT "discovery 產物缺失；請先跑 /aibdd-flows-specify + /aibdd-rules-specify" to user
        3.5.2 STOP
 
 4. TLB 必須是 frontend；後端 boundary 直接終止。
@@ -236,7 +236,7 @@ references:
 
 ## §3 CROSS-REFERENCES
 
-- `/aibdd-discovery` — 上游；產出 spec.md / activities / features / atomic-rules 為本 skill 的 INPUT SSOT
+- `/aibdd-flows-specify + /aibdd-rules-specify` — 上游；產出 spec.md / activities / features / atomic-rules 為本 skill 的 INPUT SSOT
 - `/clarify-loop` — DELEGATE 對象；本 skill 不自寫 UX 文案，所有澄清題目都丟它
 - `/aibdd-uiux-draw` — 直接下游（推薦路徑 A）；讀本 skill 產出的 `design/uiux-prompt.md` + `design/style-profile.yml`，透過 Pencil MCP 自動繪 `.pen`
 - `/aibdd-plan` — 後續下游；plan 階段會吃 `.pen` 萃取 I4 anchor / DSL L1 / contract
